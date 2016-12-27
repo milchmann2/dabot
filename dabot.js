@@ -11,13 +11,17 @@ var config = {
 };
 
 
-
-
-
+var users = []
+users = db.getAllUsers();
+var notes = db.getAllNotes();
 
 var bot = new irc.Client(config.server, config.botName, {
 	channels: config.channels
 });
+
+
+
+
 
 /*
 bot.addListener("join", function(channel, who){
@@ -28,5 +32,7 @@ bot.addListener("join", function(channel, who){
 
 bot.addListener("message", function(from, to, text, message){
 	db.insertLog(from, text);
+
+
 });
 
