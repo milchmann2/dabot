@@ -6,13 +6,30 @@ db.initialize();
 
 
 
+var users_2 = [];
+var users = db.getAllUsers(function(err, rows){
+		console.log("callback");
+		var us = [];
+		if (err){
+			return;
+		}
+		rows.forEach(function(row){
 
-var users = db.getAllUsers();
-var notes = db.getAllNotes();
-
-users.forEach(function(entry){
-	console.log(entry);
+			var user = {
+				name: row.name,
+				alias: row.alias
+			};
+			users_2.push(user);	
+		})
+		console.log(users_2);
+		return users_2;
+	
 });
+//var notes = db.getAllNotes();
+
+console.log(users_2);
+console.log(users);
+
 //db.addUser("Jeffry");
 // db.addAlias("martin", "mescht");
 

@@ -74,27 +74,18 @@ database.prototype.printEntries = function(){
 		});	
 }
 
-database.prototype.getAllUsers = function(){
+database.prototype.getAllUsers = function(cb){
 	var users = [];
-	this.db.each("SELECT name, alias FROM channel_users", (err, row) => {
-		if (err){
-			return;
-		}
-		var user = {
-			name: row.name,
-			alias: row.alias
-		};
-		users.push(user);
-		return users;
+	this.db.all("SELECT name, alias FROM channel_users", (err, rows) => {
+
+		return cb(err,rows);
 	});
-	users.forEach(function(entry){
-		console.log(entry);
-	});
+
 // TODO
 //########
 //##########
 
-	
+	return users;
 }
 
 /*
