@@ -1,26 +1,18 @@
-var irc = require("irc");
-var database = require('./database.js');
-
-var db = new database();
-db.initialize();
+var irc = require('irc');
+var fs = require('fs');
+var data = require('./data');
 
 var config = {
-	channels: ["#neverknowsbest australiansareleakers"],
+	//channels: ["#neverknowsbest australiansareleakers"],
+	channels: ["#Milchmann"],
 	server: "irc.quakenet.org",
 	botName: "dabot"
 };
 
 
-var users = []
-users = db.getAllUsers();
-var notes = db.getAllNotes();
-
 var bot = new irc.Client(config.server, config.botName, {
 	channels: config.channels
 });
-
-
-
 
 
 /*
@@ -29,10 +21,58 @@ bot.addListener("join", function(channel, who){
 });
 */
 
+data.loadAlias();
 
 bot.addListener("message", function(from, to, text, message){
-	db.insertLog(from, text);
+	
+	var from = from.toLowerCase();
+	if (checkNotes(from) === true){
+		console.log(from);
+		var notes = returnNotes(from);
+		for (var i = 0; i < notes.length; i++){
+			var msg = notes[i];
+			bot.say(to, from + " - " + msg.from + " says: " + msg.message);
+		}
+	}
 
+	var op = text.charAt(0);
+	if (op === "!"){
+		var splitted = text.split(' ');
+		var cmd = splitted.splice(0, 1)[0].substring(1);
+		var msg = splitted.join(' ');
 
+		if(cmd === "note"){
+			var split = msg.split(' ');
+			var toUser = split.splice(0, 1)[0].toLowerCase();
+			var msg = split.join(' ');
+			addNote(from, toUser, msg);
+			//bot.say(to, response[rnd(0, response.length)]);
+		} else if(cmd === "adduser"){
+			addUser(msg.toLowerCase())
+		} else if(cmd === "addalias"){
+			addAlias(msg.split(' ')[0].toLowerCase(), msg.split(' ')[1].toLowerCase());
+		}
+	}
 });
 
+
+function addUser(user){
+
+	data.addUser(user);
+}
+
+function addAlias(user, alias){
+	data.addAlias(user, alias);
+}
+
+function addNote(fromUser, toUser, msg){
+	data.addNote(fromUser, toUser, msg);
+}
+
+function checkNotes(user){
+	return data.checkNotes(user);
+}
+
+function returnNotes(user){
+	return data.returnNotes(user);
+}
