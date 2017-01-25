@@ -2,9 +2,11 @@ var irc = require('irc');
 var fs = require('fs');
 var data = require('./data');
 
+var channel;
+
 var config = {
-	channels: ["#neverknowsbest australiansareleakers"],
-	//channels: ["#dabot"],
+	
+	channels: ["#dabot"],
 	server: "irc.quakenet.org",
 	botName: "dabot"
 };
@@ -24,7 +26,7 @@ bot.addListener("join", function(channel, who){
 data.loadAlias();
 
 bot.addListener("message", function(from, to, text, message){
-	
+	channel = to;
 	var from = from.toLowerCase();
 	if (checkNotes(from) === true){
 		console.log(from);
@@ -61,16 +63,32 @@ bot.addListener("message", function(from, to, text, message){
 
 
 function addUser(user){
-
-	data.addUser(user);
+	var status = data.addUser(user);
+	if (status === 0){
+		bot.say(to, "Added new user!");
+	}else if (status === -1){
+		bot.say(to, "User already exists!");
+	}
 }
 
 function addAlias(user, alias){
-	data.addAlias(user, alias);
+	var status = data.addAlias(user, alias);
+	if (status === 0){
+		bot.say(to, "Added new alias for + " + user + "!");
+	}else if (status === -1){
+		bot.say(to, "User doesn't exist! Can't add alias for unknown user!");
+	}
 }
 
 function addNote(fromUser, toUser, msg){
-	data.addNote(fromUser, toUser, msg);
+	var status = data.addNote(fromUser, toUser, msg);
+	if (status == true){
+		bot.say(to, "Added your note! Woooooooooo \o/")
+	}
+	else
+	{
+		bot.say(to, "Couldn't add your note for whatever reason O_O")
+	}
 }
 
 function checkNotes(user){

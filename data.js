@@ -7,7 +7,7 @@ var alias = {};
 
 module.exports.addUser = function(user){
 	if (fs.existsSync(userPath + user + ".txt")){
-		console.log("user exists");
+		return -1;
 	}else{
 		var usr = {
 			user: user,
@@ -15,18 +15,20 @@ module.exports.addUser = function(user){
 		};
 		fs.writeFile(userPath + user + ".txt", JSON.stringify(usr));
 		alias[user] = user;
+		return 0;
 	}
 }
 
 module.exports.addAlias = function(user, newAlias){
 	if (!fs.existsSync(userPath + user + ".txt")){
-		console.log("addalias not");
+		return -1
 	}else{
 		var file = fs.readFileSync(userPath + user + ".txt");
 		var usr = JSON.parse(file);
 		usr.alias.push(newAlias);
 		fs.writeFile(userPath + user + ".txt", JSON.stringify(usr));
 		alias[newAlias] = user;
+		return 0;
 	}
 }
 
