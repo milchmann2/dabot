@@ -3,8 +3,7 @@ var fs = require('fs');
 var data = require('./data');
 
 var config = {
-	//channels: ["#neverknowsbest australiansareleakers"],
-	channels: ["#Milchmann"],
+	channels: ["#"],
 	server: "irc.quakenet.org",
 	botName: "dabot"
 };
