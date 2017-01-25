@@ -3,7 +3,8 @@ var fs = require('fs');
 var data = require('./data');
 
 var config = {
-	channels: ["#"],
+	channels: ["#neverknowsbest australiansareleakers"],
+	//channels: ["#dabot"],
 	server: "irc.quakenet.org",
 	botName: "dabot"
 };
@@ -49,7 +50,11 @@ bot.addListener("message", function(from, to, text, message){
 		} else if(cmd === "adduser"){
 			addUser(msg.toLowerCase())
 		} else if(cmd === "addalias"){
-			addAlias(msg.split(' ')[0].toLowerCase(), msg.split(' ')[1].toLowerCase());
+			var newAlias = msg.split(' ')[1];
+			if (newAlias === undefined){
+				return;
+			}
+			addAlias(msg.split(' ')[0].toLowerCase(), newAlias.toLowerCase());
 		}
 	}
 });
