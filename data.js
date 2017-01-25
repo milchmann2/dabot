@@ -95,5 +95,23 @@ module.exports.loadAlias = function(){
 			alias[userAlias] = user.user;
 		})
 		alias[user.user] = user.user;
-	})
+	});
+}
+
+module.exports.returnUsers = function (){
+	 var files = fs.readdirSync(userPath);
+	 var users = [];
+	 files.forEach(function(entry){
+	 	users.push(entry.substr(0, entry.lastIndexOf('.')));
+	 });
+	 return users;
+}
+
+module.exports.returnAliasFor = function(user){
+	if (!fs.existsSync(userPath + user + ".txt")){
+		return -1;
+	}else{
+		var file = fs.readFileSync(userPath + user + ".txt");
+		return JSON.parse(file).alias;
+	}
 }
