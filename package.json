@@ -1,0 +1,23 @@
+{
+  "name": "dabot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dabot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/milchmann2/dabot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/milchmann2/dabot/issues"
+  },
+  "homepage": "https://github.com/milchmann2/dabot#readme",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "irc": "^0.5.2"
+  }
+}

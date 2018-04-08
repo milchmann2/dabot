@@ -4,12 +4,18 @@ var data = require('./data');
 
 var channel;
 
-var config = {
-	
-	channels: ["#dabot"],
-	server: "irc.quakenet.org",
-	botName: "dabot"
-};
+if (process.argv.length < 3){
+	console.log("Not enough parameters. Config file missing!");
+}
+var configFile = "./" + process.argv[2];
+var config
+if (fs.existsSync(configFile)){
+	config = JSON.parse(fs.readFileSync(configFile, "utf8"));
+}
+else{
+	console.log("Config file does not exist!");
+	return;
+}
 
 
 var bot = new irc.Client(config.server, config.botName, {
