@@ -1,6 +1,7 @@
 var irc = require('irc');
 var fs = require('fs');
 var data = require('./data');
+var path = require ('path');
 
 var channel;
 
@@ -8,9 +9,17 @@ if (process.argv.length < 3){
 	console.log("Not enough parameters. Config file missing!");
 }
 var configFile = "./" + process.argv[2];
-var config
+var config;
+var configName;
 if (fs.existsSync(configFile)){
 	config = JSON.parse(fs.readFileSync(configFile, "utf8"));
+	configName = "./" + path.parse(configFile).name;
+	if (!fs.existsSync(configName)){
+		fs.mkdirSync(configName);
+		fs.mkdirSync(configName + "/users");
+		fs.mkdirSync(configName + "/notes");
+	}
+	data.setConfig(configName);
 }
 else{
 	console.log("Config file does not exist!");
@@ -35,7 +44,7 @@ bot.addListener("message", function(from, to, text, message){
 	channel = to;
 	var from = from.toLowerCase();
 	if (checkNotes(from) === true){
-		console.log(from);
+		//console.log(from);
 		var notes = returnNotes(from);
 		for (var i = 0; i < notes.length; i++){
 			var msg = notes[i];

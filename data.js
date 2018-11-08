@@ -1,9 +1,14 @@
 var fs = require('fs');
 
-var userPath = "./data/users/";
-var notePath = "./data/notes/";
+var userPath = "/users/";
+var notePath = "/notes/";
 
 var alias = {};
+
+module.exports.setConfig = function(config){
+	userPath = config + userPath;
+	notePath = config + notePath;
+}
 
 module.exports.addUser = function(user){
 	if (fs.existsSync(userPath + user + ".txt")){
@@ -87,7 +92,10 @@ module.exports.checkNotes = function(user){
 }
 
 module.exports.loadAlias = function(){
-	files = fs.readdirSync(userPath);
+	var files = fs.readdirSync(userPath);
+	if (files.length === 0){
+		return;
+	}
 	files.forEach(function(entry){
 		var file = fs.readFileSync(userPath + entry);
 		var user = JSON.parse(file);
