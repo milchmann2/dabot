@@ -48,7 +48,36 @@ bot.addListener("message", function(from, to, text, message){
 		var notes = returnNotes(from);
 		for (var i = 0; i < notes.length; i++){
 			var msg = notes[i];
-			bot.say(to, from + " - " + msg.from + " says: " + msg.message);
+			var delta = Math.abs(Date.now() - msg.time) / 1000;
+			/////#####
+			// test
+			// calculate (and subtract) whole days
+			var days = Math.floor(delta / 86400);
+			delta -= days * 86400;
+			// calculate (and subtract) whole hours
+			var hours = Math.floor(delta / 3600) % 24;
+			delta -= hours * 3600;
+			// calculate (and subtract) whole minutes
+			var minutes = Math.floor(delta / 60) % 60;
+			delta -= minutes * 60;
+			// what's left is seconds
+			var seconds = delta % 60;  // in theory the modulus is not required
+			/////@@@### test
+			var time = '';
+			if (days > 0){
+				time += days + "days ";
+			}
+			if (hours > 0){
+				time += hours + "hours ";
+			}
+			if (minutes > 0){
+				time += minutes + "minutes ";
+			}
+			if (time.length > 0){
+				time += ' ago, '
+			}
+			
+			bot.say(to, from + " - " + time + msg.from + " says: " + msg.message);
 		}
 	}
 

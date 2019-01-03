@@ -41,11 +41,11 @@ module.exports.addNote = function(fromUser, toUser, msg){
 	if (toUser in alias)
 	{
 		var toUser = alias[toUser];
-
 		if (!fs.existsSync(notePath + toUser + ".txt")){
 			var note = {
 				notes: [{
 					from: fromUser,
+					time: Date.now(),
 					message: msg
 				}]
 			}
@@ -55,6 +55,7 @@ module.exports.addNote = function(fromUser, toUser, msg){
 			var notes = JSON.parse(file);
 			var note = {
 				from: fromUser,
+				time: Date.now(),
 				message: msg
 			}
 			notes.notes.push(note);
