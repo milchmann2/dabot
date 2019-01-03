@@ -18,7 +18,7 @@ module.exports.addUser = function(user){
 			user: user,
 			alias: []
 		};
-		fs.writeFile(userPath + user + ".txt", JSON.stringify(usr));
+		fs.writeFile(userPath + user + ".txt", JSON.stringify(usr), callback);
 		alias[user] = user;
 		return 0;
 	}
@@ -31,7 +31,7 @@ module.exports.addAlias = function(user, newAlias){
 		var file = fs.readFileSync(userPath + user + ".txt");
 		var usr = JSON.parse(file);
 		usr.alias.push(newAlias);
-		fs.writeFile(userPath + user + ".txt", JSON.stringify(usr));
+		fs.writeFile(userPath + user + ".txt", JSON.stringify(usr), callback);
 		alias[newAlias] = user;
 		return 0;
 	}
@@ -49,7 +49,7 @@ module.exports.addNote = function(fromUser, toUser, msg){
 					message: msg
 				}]
 			}
-			fs.writeFile(notePath + toUser + ".txt", JSON.stringify(note));	
+			fs.writeFile(notePath + toUser + ".txt", JSON.stringify(note), callback);	
 		} else{
 			var file = fs.readFileSync(notePath + toUser + ".txt");
 			var notes = JSON.parse(file);
@@ -58,7 +58,7 @@ module.exports.addNote = function(fromUser, toUser, msg){
 				message: msg
 			}
 			notes.notes.push(note);
-			fs.writeFile(notePath + toUser + ".txt", JSON.stringify(notes));
+			fs.writeFile(notePath + toUser + ".txt", JSON.stringify(notes), callback);
 		}
 	}else{
 		console.log("" + userPath + toUser + ".txt");
@@ -122,4 +122,8 @@ module.exports.returnAliasFor = function(user){
 		var file = fs.readFileSync(userPath + user + ".txt");
 		return JSON.parse(file).alias;
 	}
+}
+
+var callback = function(err){
+	if (err) throw err;
 }
