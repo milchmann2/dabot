@@ -1,0 +1,5 @@
+{
+	"channels": ["#dabot"],
+	"server": "irc.quakenet.org",
+	"botName": "dabotv2"
+}
